@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Valentine 💘</title>
+
+  <!-- GOOGLE FONTS -->
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* RESET DEFAULT BROWSER STYLES */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* MAIN PAGE STYLE */
+    body {
+      height: 100vh;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* EACH SCREEN */
+    .screen {
+      display: none;
+      text-align: center;
+      width: 100%;
+      padding: 20px;
+    }
+
+    /* ACTIVE SCREEN */
+    .active {
+      display: block;
+    }
+
+    /* HEADINGS */
+    h1 {
+      font-family: 'Pacifico', cursive;
+      color: white;
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    /* BUTTON STYLE */
+    button {
+      padding: 15px 30px;
+      font-size: 1.1rem;
+      border-radius: 30px;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* GALLERY IMAGES */
+    .gallery {
+      display: flex;
+      gap: 15px;
+      overflow-x: auto;
+      padding: 20px;
+    }
+
+    .gallery img {
+      height: 280px;
+      border-radius: 20px;
+      flex-shrink: 0;
+    }
+
+    .memoryText {
+      color: white;
+      font-size: 1.1rem;
+      margin: 15px 0;
+    }
+
+    /* YES BUTTON */
+    #yesBtn {
+      background: #ff4d6d;
+      color: white;
+      margin-right: 20px;
+    }
+
+    /* NO BUTTON */
+    #noBtn {
+      background: white;
+      color: #ff4d6d;
+      position: absolute;
+    }
+
+    /* VIDEO */
+    video {
+      width: 90%;
+      max-width: 400px;
+      border-radius: 15px;
+    }
+
+    /* COUNTDOWN */
+    #countdown {
+      font-size: 3rem;
+      color: white;
+      margin: 15px 0;
+    }
+
+    /* DOWNLOAD LINK */
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      color: white;
+      font-size: 1.1rem;
+      text-decoration: underline;
+    }
+
+    canvas {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ===================== SCREEN 0: PHOTO MEMORIES ===================== -->
+<div class="screen active" id="galleryScreen">
+  <h1>Us 💞</h1>
+
+  <!-- YOUR PHOTOS -->
+  <div class="gallery">
+    <img src="photo1.jpg">
+    <img src="photo2.jpg">
+    <img src="photo3.jpg">
+    <img src="photo4.jpg">
+  </div>
+
+  <!-- FUNNY TEXT THAT CHANGES -->
+  <p class="memoryText" id="memoryText">
+    Proof that you voluntarily hang out with me.
+  </p>
+
+  <button id="continueBtn">Continue 💗</button>
+</div>
+
+<!-- ===================== SCREEN 1: VALENTINE QUESTION ===================== -->
+<div class="screen" id="askScreen">
+  <h1>Will you be my Valentine? 💘</h1>
+  <button id="yesBtn">Yes 💖</button>
+  <button id="noBtn">No 😐</button>
+</div>
+
+<!-- ===================== SCREEN 2: FAKE LOADING ===================== -->
+<div class="screen" id="yesScreen">
+  <h1 id="celebrate">Processing your answer…</h1>
+</div>
+
+<!-- ===================== SCREEN 3: PHOTO BOOTH ===================== -->
+<div class="screen" id="photoScreen">
+  <h1>Photo Booth 📸</h1>
+  <video id="video" autoplay playsinline></video>
+  <div id="countdown"></div>
+  <canvas id="canvas"></canvas>
+  <div id="photoStrip"></div>
+  <a id="downloadLink" download="Our_Valentine.png">Download our photo 💖</a>
+</div>
+
+<script>
+/* ===================== BASIC SCREEN SWITCH FUNCTION ===================== */
+function switchScreen(hide, show) {
+  document.getElementById(hide).classList.remove("active");
+  document.getElementById(show).classList.add("active");
+}
+
+/* ===================== MEMORY TEXT JOKES ===================== */
+const memoryTexts = [
+  "Proof that you voluntarily hang out with me.",
+  "Still shocked you stayed.",
+  "Somehow my best decision.",
+  "We look good, admit it.",
+  "This could’ve gone worse."
+];
+
+let textIndex = 0;
+setInterval(() => {
+  textIndex = (textIndex + 1) % memoryTexts.length;
+  document.getElementById("memoryText").textContent = memoryTexts[textIndex];
+}, 2500);
+
+/* ===================== CONTINUE BUTTON ===================== */
+document.getElementById("continueBtn").onclick = () => {
+  switchScreen("galleryScreen", "askScreen");
+};
+
+/* ===================== NO BUTTON RUNS AWAY ===================== */
+const noBtn = document.getElementById("noBtn");
+const noMessages = [
+  "Wrong answer",
+  "Try again",
+  "Be serious",
+  "Nice joke",
+  "Okay stop"
+];
+
+let noCount = 0;
+noBtn.addEventListener("mouseover", () => {
+  noBtn.textContent = noMessages[Math.min(noCount, noMessages.length - 1)];
+  noCount++;
+  noBtn.style.left = Math.random() * 80 + "vw";
+  noBtn.style.top = Math.random() * 80 + "vh";
+});
+
+/* ===================== YES BUTTON LOGIC ===================== */
+document.getElementById("yesBtn").onclick = () => {
+  switchScreen("askScreen", "yesScreen");
+
+  setTimeout(() => {
+    document.getElementById("celebrate").textContent = "Analyzing vibes…";
+  }, 1000);
+
+  setTimeout(() => {
+    document.getElementById("celebrate").textContent = "Approved 💕";
+  }, 2000);
+
+  setTimeout(() => {
+    switchScreen("yesScreen", "photoScreen");
+    startCamera();
+  }, 3000);
+};
+
+/* ===================== PHOTO BOOTH ===================== */
+const video = document.getElementById("video");
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+const countdown = document.getElementById("countdown");
+const link = document.getElementById("downloadLink");
+
+let photos = [];
+
+/* START CAMERA */
+function startCamera() {
+  navigator.mediaDevices.getUserMedia({ video: true })
+    .then(stream => {
+      video.srcObject = stream;
+      setTimeout(() => takePhotos(3), 1000);
+    });
+}
+
+/* TAKE MULTIPLE PHOTOS */
+function takePhotos(num) {
+  if (num === 0) {
+    makeFinalPhoto();
+    return;
+  }
+
+  let count = 3;
+  countdown.textContent = count;
+
+  const timer = setInterval(() => {
+    count--;
+    countdown.textContent = count || "";
+    if (count === 0) {
+      clearInterval(timer);
+      capturePhoto();
+      setTimeout(() => takePhotos(num - 1), 500);
+    }
+  }, 1000);
+}
+
+/* CAPTURE PHOTO */
+function capturePhoto() {
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  ctx.drawImage(video, 0, 0);
+  photos.push(canvas.toDataURL("image/png"));
+}
+
+/* COMBINE PHOTOS INTO ONE */
+function makeFinalPhoto() {
+  const stripCanvas = document.createElement("canvas");
+  const stripCtx = stripCanvas.getContext("2d");
+
+  const img = new Image();
+  img.src = photos[0];
+
+  img.onload = () => {
+    const w = img.width;
+    const h = img.height;
+    stripCanvas.width = w;
+    stripCanvas.height = h * photos.length + 60;
+
+    stripCtx.fillStyle = "white";
+    stripCtx.fillRect(0, 0, stripCanvas.width, stripCanvas.height);
+
+    photos.forEach((src, i) => {
+      const p = new Image();
+      p.src = src;
+      p.onload = () => {
+        stripCtx.drawImage(p, 0, i * h);
+      };
+    });
+
+    stripCtx.fillStyle = "#ff4d6d";
+    stripCtx.font = "30px Pacifico";
+    stripCtx.fillText("Still together 💘", 20, stripCanvas.height - 20);
+
+    document.getElementById("photoStrip").appendChild(stripCanvas);
+    link.href = stripCanvas.toDataURL("image/png");
+  };
+}
+</script>
+
+</body>
+</html>
