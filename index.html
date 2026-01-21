@@ -91,7 +91,24 @@
       color: #ff4d6d;
       position: absolute;
     }
+.loveText {
+  font-size: 1.4rem;
+  color: white;
+  margin-top: 10px;
+  opacity: 0;
+  animation: fadeIn 2s ease forwards;
+}
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
     /* VIDEO */
     video {
       width: 90%;
@@ -152,8 +169,10 @@
 
 <!-- ===================== SCREEN 2: FAKE LOADING ===================== -->
 <div class="screen" id="yesScreen">
-  <h1 id="celebrate">Processing your answer…</h1>
+  <h1 id="celebrate">You’re mine </h1>
+  <p class="loveText">I love you,Bijan.</p>
 </div>
+
 
 <!-- ===================== SCREEN 3: PHOTO BOOTH ===================== -->
 <div class="screen" id="photoScreen">
@@ -174,11 +193,11 @@ function switchScreen(hide, show) {
 
 /* ===================== MEMORY TEXT JOKES ===================== */
 const memoryTexts = [
-  "Proof that you voluntarily hang out with me.",
-  "Still shocked you stayed.",
+  "Ujjaaaaaaa",
+  "Cocomelon's MamaPapa, muhehehehe, psppsspsps",
   "Somehow my best decision.",
-  "We look good, admit it.",
-  "This could’ve gone worse."
+  "MUHEHEHEHEHHEE.",
+  "MEOWOWWOOWOWOWOWOMEOWWWWWW"
 ];
 
 let textIndex = 0;
@@ -196,10 +215,10 @@ document.getElementById("continueBtn").onclick = () => {
 const noBtn = document.getElementById("noBtn");
 const noMessages = [
   "Wrong answer",
-  "Try again",
-  "Be serious",
+  "hyaaaaaaaaaaaa",
+  "Ujjaaa",
   "Nice joke",
-  "Okay stop"
+  "HELL NAHHHHHH"
 ];
 
 let noCount = 0;
@@ -222,10 +241,10 @@ document.getElementById("yesBtn").onclick = () => {
     document.getElementById("celebrate").textContent = "Approved 💕";
   }, 2000);
 
-  setTimeout(() => {
+    setTimeout(() => {
     switchScreen("yesScreen", "photoScreen");
     startCamera();
-  }, 3000);
+  }, 4000);
 };
 
 /* ===================== PHOTO BOOTH ===================== */
