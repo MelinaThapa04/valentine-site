@@ -293,6 +293,12 @@ function capturePhoto() {
   ctx.drawImage(video, 0, 0);
   photos.push(canvas.toDataURL("image/png"));
 }
+link.addEventListener("click", (e) => {
+  if (!link.href) {
+    e.preventDefault();
+    alert("Hold on, photo still loading 💕");
+  }
+});
 
 /* COMBINE PHOTOS INTO ONE */
 function makeFinalPhoto() {
