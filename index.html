@@ -299,32 +299,46 @@ function makeFinalPhoto() {
   const stripCanvas = document.createElement("canvas");
   const stripCtx = stripCanvas.getContext("2d");
 
-  const img = new Image();
-  img.src = photos[0];
+  const firstImg = new Image();
+  firstImg.src = photos[0];
 
-  img.onload = () => {
-    const w = img.width;
-    const h = img.height;
+  firstImg.onload = () => {
+    const w = firstImg.width;
+    const h = firstImg.height;
+
     stripCanvas.width = w;
-    stripCanvas.height = h * photos.length + 60;
+    stripCanvas.height = h * photos.length + 80;
 
-    stripCtx.fillStyle = "white";
+    // background
+    stripCtx.fillStyle = "#ffffff";
     stripCtx.fillRect(0, 0, stripCanvas.width, stripCanvas.height);
 
+    let loaded = 0;
+
     photos.forEach((src, i) => {
-      const p = new Image();
-      p.src = src;
-      p.onload = () => {
-        stripCtx.drawImage(p, 0, i * h);
+      const img = new Image();
+      img.src = src;
+
+      img.onload = () => {
+        stripCtx.drawImage(img, 0, i * h);
+        loaded++;
+
+        // ONLY when all photos are drawn
+        if (loaded === photos.length) {
+          stripCtx.fillStyle = "#ff4d6d";
+          stripCtx.font = "30px Pacifico";
+          stripCtx.fillText("Still together 💘", 20, stripCanvas.height - 30);
+
+          const container = document.getElementById("photoStrip");
+          container.innerHTML = "";
+          container.appendChild(stripCanvas);
+
+          const imageData = stripCanvas.toDataURL("image/png");
+          link.href = imageData;
+          link.style.display = "inline-block";
+        }
       };
     });
-
-    stripCtx.fillStyle = "#ff4d6d";
-    stripCtx.font = "30px Pacifico";
-    stripCtx.fillText("Still together 💘", 20, stripCanvas.height - 20);
-
-    document.getElementById("photoStrip").appendChild(stripCanvas);
-    link.href = stripCanvas.toDataURL("image/png");
   };
 }
 </script>
